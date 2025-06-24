@@ -1,34 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { WagmiProvider } from 'wagmi'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Toaster } from 'react-hot-toast'
+
+import { config } from './config/wagmi'
+import Layout from './components/Layout'
+import HomePage from './pages/HomePage'
+import MapPage from './pages/MapPage'
+import ProfilePage from './pages/ProfilePage'
+import MintPage from './pages/MintPage'
+import WalletPage from './pages/WalletPage'
+
+// Client for React Query
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000, // 1 minute
+      cacheTime: 10 * 60 * 1000, // 10 minutes
+    },
+  },
+})
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <div className="min-h-screen bg-gray-50">
+            <Layout>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/map" element={<MapPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/mint" element={<MintPage />} />
+                <Route path="/wallet" element={<WalletPage />} />
+              </Routes>
+            </Layout>
+
+            {/* Toast notifications */}
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  background: '#363636',
+                  color: '#fff',
+                },
+                success: {
+                  duration: 3000,
+                  theme: {
+                    primary: '#4aed88',
+                  },
+                },
+              }}
+            />
+          </div>
+        </Router>
+      </QueryClientProvider>
+    </WagmiProvider>
   )
 }
 
