@@ -16,13 +16,13 @@ contract GeoNFT is ERC721, ERC721URIStorage, Ownable {
 
     // Mapping from token ID to location data
     mapping(uint256 => Location) public tokenLocations;
-    
+
     // Mapping from token ID to price (for marketplace functionality)
     mapping(uint256 => uint256) public tokenPrices;
-    
+
     // Mapping to track if token is for sale
     mapping(uint256 => bool) public tokenForSale;
-    
+
     struct Location {
         int256 latitude;   // Stored as integer (multiply by 1e6 for precision)
         int256 longitude;  // Stored as integer (multiply by 1e6 for precision)
