@@ -13,7 +13,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract GeoNFT is ERC721, ERC721URIStorage, Ownable {
     // Token ID counter (replacing Counters library)
     uint256 private _tokenIdCounter;
-    
+
     // Mapping from token ID to location data
     mapping(uint256 => Location) public tokenLocations;
     
